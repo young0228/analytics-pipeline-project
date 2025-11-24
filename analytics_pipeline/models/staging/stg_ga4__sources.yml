@@ -1,0 +1,34 @@
+version: 2
+
+sources:
+  - name: ga4_sample
+    database: bigquery-public-data
+    schema: ga4_obfuscated_sample_ecommerce
+    tables:
+      - name: events_20210131
+
+models:
+  - name: stg_ga4__events
+    columns:
+      - name: user_pseudo_id
+        tests:
+          - not_null
+      - name: event_timestamp
+        tests:
+          - not_null
+  
+  - name: stg_users
+    columns:
+      - name: user_pseudo_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_ga4__item_purchases
+    columns:
+      - name: transaction_id
+        tests:
+          - not_null
+      - name: item_id
+        tests:
+          - not_null
