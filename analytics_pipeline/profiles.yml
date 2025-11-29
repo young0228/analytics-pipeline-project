@@ -1,0 +1,11 @@
+analytics_pipeline:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: silver-seat-345206 # GCP Project ID
+      dataset: analytics
+      threads: 4
+      keyfile: dbt-service-account.json # File name that GitHub Actions going to make
+      location: US

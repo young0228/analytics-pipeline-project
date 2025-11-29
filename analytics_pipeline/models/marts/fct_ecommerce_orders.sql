@@ -1,6 +1,7 @@
 {{
   config(
-    materialized = 'table' 
+    materialized = 'incremental',
+    unique_key = 'transaction_id' 
   )
 }}
 
@@ -28,3 +29,7 @@ select
     (total_transaction_revenue_usd / item_count) as avg_item_price_usd
 
 from orders_aggregated
+
+{% if is_incremental() %}
+  where order_timestamp >= (select max(order_timestamp) from {{ this }})
+{% endif %}

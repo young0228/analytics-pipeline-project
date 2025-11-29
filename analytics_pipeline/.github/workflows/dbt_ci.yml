@@ -1,0 +1,35 @@
+name: dbt CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  DBT_PROFILES_DIR: ./
+
+jobs:
+  dbt_ci:
+    name: dbt CI Job
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install dbt
+        run: |
+          pip install dbt-bigquery
+          dbt deps
+
+      - name: Authenticate with BigQuery
+        run: |
+          echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > ./dbt-service-account.json
+
+      - name: Run dbt compile
+        run: dbt compile --profiles-dir . --target dev

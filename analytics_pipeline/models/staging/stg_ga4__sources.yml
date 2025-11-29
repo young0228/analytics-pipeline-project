@@ -9,6 +9,7 @@ sources:
 
 models:
   - name: stg_ga4__events
+    description: "Staging model that cleans and prepares the full raw GA4 event stream. Each row represents a single, granular event instance (e.g., page_view, click)."
     columns:
       - name: user_pseudo_id
         tests:
@@ -18,6 +19,7 @@ models:
           - not_null
   
   - name: stg_users
+    description: "This staging model creates a de-duplicated list of all unique users observed in the GA4 events. It serves as the **Single Source of Truth (SSOT)** for user-level dimensions and metrics."
     columns:
       - name: user_pseudo_id
         tests:
@@ -25,6 +27,7 @@ models:
           - not_null
 
   - name: stg_ga4__item_purchases
+    description: "Staging model that extracts transaction and item-level purchase data. It un-nests the items array from 'purchase' events, where each row represents a single item within a transaction."
     columns:
       - name: transaction_id
         tests:
@@ -32,3 +35,14 @@ models:
       - name: item_id
         tests:
           - not_null
+
+  - name: fct_ecommerce_orders
+    description: "Final sales performance table aggregated by order."
+    columns:
+      - name: gmv_usd
+        description: "Gross Merchandise Value (GVM). This is the sum of the prices of all products in the order."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+      - name: avg_item_price_usd
+        description: "Average Order Value (AOV). This is the total transaction amount divided by the number of products."
