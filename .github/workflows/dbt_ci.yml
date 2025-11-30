@@ -29,10 +29,10 @@ jobs:
           dbt deps
 
       - name: Authenticate with BigQuery
-              run: |
-                echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > analytics_pipeline/dbt-service-account.json
+        run: |
+          echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > analytics_pipeline/dbt-service-account.json
 
       - name: Run dbt compile
         run: |
           cd analytics_pipeline
-          dbt compile --profiles-dir .. --target dev
+          dbt compile --profiles-dir $GITHUB_WORKSPACE --target dev
