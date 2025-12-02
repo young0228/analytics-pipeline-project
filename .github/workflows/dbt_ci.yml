@@ -30,7 +30,7 @@ jobs:
 
       - name: Authenticate with BigQuery
         run: |
-          echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > analytics_pipeline/dbt-service-account.json
+          echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 -d > analytics_pipeline/dbt-service-account.json
 
       - name: Run dbt compile
         run: |
