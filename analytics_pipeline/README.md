@@ -20,8 +20,6 @@ The pipeline is structured into Staging (Cleaning) and Marts (Business Logic).
     * **GMV (Gross Merchandise Value)**
     * **AOV (Average Order Value)**
 
----
-
 ### ⚙️ Getting Started (Local Setup)
 
 This project requires a connection to a Google Cloud Platform account with BigQuery access.
@@ -41,3 +39,5 @@ This project requires a connection to a Google Cloud Platform account with BigQu
     dbt test
     dbt docs generate
     ```
+
+    

@@ -22,14 +22,17 @@ jobs:
         with:
           python-version: "3.9"
 
-      - name: Install dbt
+      - name: Install dbt and dependencies
         run: |
           pip install dbt-bigquery
+          cd analytics_pipeline
           dbt deps
 
       - name: Authenticate with BigQuery
         run: |
-          echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > ./dbt-service-account.json
+          echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 -d > analytics_pipeline/dbt-service-account.json
 
       - name: Run dbt compile
-        run: dbt compile --profiles-dir . --target dev
+        run: |
+          cd analytics_pipeline
+          dbt compile --profiles-dir $GITHUB_WORKSPACE --target dev
