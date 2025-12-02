@@ -39,3 +39,5 @@ This project requires a connection to a Google Cloud Platform account with BigQu
     dbt test
     dbt docs generate
     ```
+
+    
